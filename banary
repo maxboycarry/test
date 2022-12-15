@@ -1,0 +1,35 @@
+import cv2
+
+capture = cv2.VideoCapture(0) #비디오
+
+capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) #해상도
+
+origianlimg = cv2.imread("template.png") #오리지날 이미지
+gray = cv2.cvtColor(origianlimg, cv2.COLOR_BGR2GRAY) #오리지날 이미지 그레이스케일 적용
+ret, dst = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY) #그레이스케일 적용된 이미지를 2진화
+cv2.imshow("binary", dst)
+cv2.imshow("original", origianlimg)
+
+
+while cv2.waitKey(33) < 0:
+    ret, frame = capture.read() #프레임 읽기 메서드(capture.read)를 이용하여 카메라의 상태 및 프레임을 받아옵니다.
+                                #ret은 카메라의 상태가 저장되며 정상 작동할 경우 True를 반환합니다. 작동하지 않을 경우 False를 반환합니다.
+                                #frame에 현재 시점의 프레임이 저장됩니다.
+    templateimg = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    ret, dst = cv2.threshold(templateimg, 200, 255, cv2.THRESH_BINARY)
+    cv2.imshow("VideoFrame", dst) #지속적 프레임 캡쳐
+
+capture.release()
+cv2.destroyAllWindows()
+# img = cv2.imread("template.png")
+
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# ret, dst = cv2.threshold(gray, 230, 255, cv2.THRESH_BINARY)
+
+# cv2.imshow("binary", dst)
+# cv2.imshow("original", img)
+
+
+# cv2.waitKey(0)
